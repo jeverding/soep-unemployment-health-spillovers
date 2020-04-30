@@ -449,7 +449,7 @@ use "${MY_OUT_PATH}\gen_ue2.dta", clear
 	rename bdp11101		sleepweekday2013
 	rename bfp12801		sleepweekday2015
 	
-* Harmonize variable names of the $pgen-files I
+* Harmonize variable names of $pgen-files, part 1
 local z = 1999
 foreach y in p q r s t u v w x y z ba bb bc bd be bf bg {
 	foreach w in famstd psbil pbbil01 pbbil02 bula erwzeit wum1 regtyp tatzeit {
@@ -460,7 +460,7 @@ foreach y in p q r s t u v w x y z ba bb bc bd be bf bg {
 	local z = `z' + 1
 }
 
-* harmonize variable names of the $pequiv-files
+* Harmonize variable names of $pequiv-files
 foreach y in 99 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 {
 	rename d11107`y' 	kids`y'
 	rename m11126`y' 	hlthsat`y'
@@ -482,7 +482,7 @@ foreach y in 99 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 {
 	rename p11101`y'	lifesatisfac`y'
 }
 
-* Harmonize variable names of the $pgen-files II
+* Harmonize variable names of $pgen-files, part 2
 local z = 1999
 foreach y in 99 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 {
 	foreach w in expue expft owner rsubs partnr nace jobch stib month emplst allbet /* 
@@ -505,7 +505,7 @@ keep famstd* psbil* pbbil01* pbbil02*  kids* owner* rsubs* wum1* regtyp* ue_reg*
 * Drop all individuals with multiple treatments per year:
 bysort persnr: drop if _N>1
 
-* Change data format from wide to long (variables hhnr, hsample, design, psu cannot be reshaped: time-constant)
+* Reshape data from wide to long format (variables hhnr, hsample, design, psu cannot be reshaped: time-constant)
 reshape long famstd@ psbil@ pbbil01@ pbbil02@ kids@ owner@ rsubs@ wum1@ regtyp@ ue_reg@ artende@ depress@ jsec@ stib@ expue@ expft@ month@ emplst@ nace@ mcs@ pcs@ mh_nbs@ bmi@ height@ weight@ /*
 	*/ bula@ partnr@ hlthsat@ erwzeit@ jobch@ allbet@ labinc@ ende1_@ ende2_@ /*
 	*/ hlthinsur@ smoke@ cigday@ diet@ /* 
@@ -519,7 +519,7 @@ xtset 	persnr welle
 		
 save "${MY_OUT_PATH}\trans_long.dta", replace
 
-* Pull regional UE rates (available from https://www-genesis.destatis.de/genesis/online)
+* Pull regional unemployment rates (available from https://www-genesis.destatis.de/genesis/online)
 insheet using "$MY_FINAL_PATH\UE_Laender_bis_2016.csv", delimiter(";") names clear
 local z=1
 foreach x of varlist  badenwrttemberg -thringen {
@@ -589,7 +589,7 @@ mvdecode smoke satisrolehh, mv(-1 -3 -4 -5 -6 -7 -8 -9)
 
 ***************************************************************************************************
 
-*				Generating RHS Variables
+*				Code up RHS Variables
 
 ***************************************************************************************************
 label def yesno 0 "[0] no" 1 "[1] yes"
@@ -613,19 +613,19 @@ gen 	female=sex==2 if sex!=.
 gen 	partner=partnr>0 & partnr!=.
 	label def partner 0 "Single" 1 "Partner", replace
 	label val partner partner
-sort persnr welle
+sort 	persnr welle
 	label def religious 0 "Not religious" 1 "Religious", replace 
 	label val religious religious 
-gen churchorrelig=religious==1 if religious!=.
+gen 	churchorrelig=religious==1 if religious!=.
 	replace churchorrelig=1 if church==1
 	replace churchorrelig=0 if church==0 & churchorrelig==.
 gen 	west=bula>=0 & bula<=10 if bula!=.
 	label def west 0 "East" 1 "West", replace
 	label val west west
-gen howner=owner==1 if owner!=.
-gen socialflat=rsubs==1 | rsubs==2 if rsubs!=.
-gen urban=regtyp==1 if regtyp!=.
-gen aprtmntbuilding=.
+gen 	howner=owner==1 if owner!=.
+gen 	socialflat=rsubs==1 | rsubs==2 if rsubs!=.
+gen 	urban=regtyp==1 if regtyp!=.
+gen 	aprtmntbuilding=.
 	replace aprtmntbuilding=1 if wum1>=4 & wum1<=8 & wum1!=.
 	replace aprtmntbuilding=0 if wum1>=1 & wum1<=3 & wum1!=.
 gen 	retireage=.
@@ -660,23 +660,23 @@ gen 	retired	=stib==13 if stib!=.
 	label def retired 0 "Not retired" 1 "Retired", replace
 	label val retired retired
 gen 	labinc2=labinc^2
-gen lnlabinc=ln(labinc+1)
-gen lnlabinc2=lnlabinc^2
-gen labinc30k=labinc>=30000 & labinc!=. 
-gen labinc26k=labinc>=26000 & labinc!=. 
+gen 	lnlabinc=ln(labinc+1)
+gen 	lnlabinc2=lnlabinc^2
+gen 	labinc30k=labinc>=30000 & labinc!=. 
+gen 	labinc26k=labinc>=26000 & labinc!=. 
 gen 	nounemp=expue==0 if expue!=.
 gen 	erwzeit2=erwzeit^2
 gen 	lnerwzeit=ln(erwzeit+1)
 gen 	expft2=expft^2
 gen 	lnexpft=ln(expft+1)
-replace nace=999 if nace==.
-replace allbet=99 if allbet==.
-qui tab allbet, gen(allbet_)
-replace jsec=99 if jsec==.
+	replace nace=999 if nace==.
+	replace allbet=99 if allbet==.
+	qui tab allbet, gen(allbet_)
+	replace jsec=99 if jsec==.
 gen 	notempl=emplst==5 if emplst!=.
-replace jsec=99	if jsec==-6
-replace jsec=99	if jsec==-5	
-qui tab jsec, gen(jsec_) 
+	replace jsec=99	if jsec==-6
+	replace jsec=99	if jsec==-5	
+	qui tab jsec, gen(jsec_) 
 gen 	branch=.
 	replace branch=1  if nace>=1   & nace<=14														/* Primary Sector */
 	replace branch=2  if (nace>=15 & nace<=37) |   nace==96	 | nace==97  |    nace==100				/* Manufacturing */
@@ -708,36 +708,36 @@ gen 	medhlth=hlthsat==3 if hlthsat!=.
 gen 	mcs2=mcs^2
 gen 	pcs2=pcs^2
 qui gen hdepress=inlist(depress, 1, 2, 3)
-replace diet=. 		if diet==-5
+	replace diet=. if diet==-5
 gen 	diet2=diet^2
-gen hlthydiet=.
-	gen unhlthydiet=.
+gen 	hlthydiet=.
+gen	unhlthydiet=.
 	replace hlthydiet	=diet==3 	| diet==4	if diet!=.
 	replace unhlthydiet	=diet==1	| diet==2	if diet!=.
 
 gen 	sport2=sport^2
-replace smoke=2 		if smoke==3 /* Applies only in 1999 */ 
-replace smoke=0 		if smoke==2 /* Applies only in 1999 */ 
-replace smoke=0 		if smoke==-2 & mod(welle,2)==0	/* Applies only in 2002 */ 
-replace smoke=.			if smoke==-5 
+	replace smoke=2 		if smoke==3 /* Applies only in 1999 */ 
+	replace smoke=0 		if smoke==2 /* Applies only in 1999 */ 
+	replace smoke=0 		if smoke==-2 & mod(welle,2)==0	/* Applies only in 2002 */ 
+	replace smoke=.			if smoke==-5 
 							
-replace cigday=0 		if smoke==0 & cigday==-2 & mod(welle,2)==0
-replace cigday=. if cigday==-5
+	replace cigday=0 		if smoke==0 & cigday==-2 & mod(welle,2)==0
+	replace cigday=. if cigday==-5
 mvdecode cigday, mv(-1 -2 -3)
 gen 	cigday2=cigday^2
 gen 	cigday_miss=cigday==. 
 gen 	lncigday=ln(cigday+1)
 gen 	lncigday2=lncigday^2
 gen 	smoke_miss=smoke==. 
-replace eversmoke12=. if welle<gebjahr+eversmoke12age & eversmoke12age!=. & eversmoke12age>=0 & gebjahr!=. & gebjahr>=0 
-replace eversmoke12=. if welle<2012 					& (eversmoke12age==. | eversmoke12age<0 | gebjahr==. | gebjahr<0)
-replace eversmoke=1 if eversmoke12==1 & eversmoke12!=. 
-replace	eversmoke=1 if (smoke==1 | l2.smoke==1 | l4.smoke==1 | l6.smoke==1 | l8.smoke==1 | l10.smoke==1 | l12.smoke==1 | l14.smoke==1) 
+	replace eversmoke12=. if welle<gebjahr+eversmoke12age & eversmoke12age!=. & eversmoke12age>=0 & gebjahr!=. & gebjahr>=0 
+	replace eversmoke12=. if welle<2012 					& (eversmoke12age==. | eversmoke12age<0 | gebjahr==. | gebjahr<0)
+	replace eversmoke=1 if eversmoke12==1 & eversmoke12!=. 
+	replace	eversmoke=1 if (smoke==1 | l2.smoke==1 | l4.smoke==1 | l6.smoke==1 | l8.smoke==1 | l10.smoke==1 | l12.smoke==1 | l14.smoke==1) 
 	label 	var eversmoke "Ever-smoker"
 	drop eversmoke12
 gen 	heavysmkr	=.
-replace	heavysmkr	=0		if cigday<=20	& cigday!=.
-replace	heavysmkr	=1		if cigday>20 	& cigday!=.
+	replace	heavysmkr	=0		if cigday<=20	& cigday!=.
+	replace	heavysmkr	=1		if cigday>20 	& cigday!=.
 gen 	bmi2=bmi^2
 gen 	height2=height^2
 gen 	heightmeter=height/100
@@ -754,19 +754,19 @@ gen 	overwght3=.
 gen 	normalwght=.
 	replace normalwght	=1	if bmi>=18.5 		& bmi<25	& bmi!=.
 	replace normalwght	=0	if bmi<18.5 		& bmi>=25	& bmi!=.
-gen obese2=.
+gen 	obese2=.
 	replace obese2	=0 		if bmi<30 		& bmi!=.
 	replace obese2	=1		if bmi>=30 		& bmi!=.
-gen overwght=.
+gen 	overwght=.
 	replace overwght	=0 		if bmi<=25 		& bmi!=.
 	replace overwght	=1		if bmi>25 		& bmi!=.
-gen obese=.
+gen 	obese=.
 	replace obese	=0 		if bmi<=30 		& bmi!=.
 	replace obese	=1		if bmi>30 		& bmi!=.
-gen underwght=.
+gen 	underwght=.
 	replace underwght	=0 		if bmi>=18.5 	& bmi!=.
 	replace underwght	=1		if bmi<18.5 	& bmi!=.
-gen wghtcategory=.
+gen 	wghtcategory=.
 	replace wghtcategory	=0	if bmi<18.5 				& bmi!=.
 	replace wghtcategory	=1	if bmi>=18.5 	& bmi<=25	& bmi!=.
 	replace wghtcategory	=2	if bmi>25 		& bmi<=30	& bmi!=.
@@ -775,7 +775,7 @@ gen wghtcategory=.
 	label val wghtcategory wghtcategory wghtcategory wghtcategory
 gen 	f2wghtcategory=f2.wghtcategory
 gen 	f4wghtcategory=f4.wghtcategory
-qui tab wghtcategory, gen(wghtcategory_)
+	qui tab wghtcategory, gen(wghtcategory_)
 gen 	wghtcategory2=.
 	replace wghtcategory2	=0	if bmi<18.5 				& bmi!=.
 	replace wghtcategory2	=1	if bmi>=18.5 	& bmi<25	& bmi!=.
@@ -785,7 +785,7 @@ gen 	wghtcategory2=.
 	label val wghtcategory2 wghtcategory2 wghtcategory2 wghtcategory2
 gen 	f2wghtcategory2=f2.wghtcategory2
 gen 	f4wghtcategory2=f4.wghtcategory2
-qui tab wghtcategory2, gen(wghtcategory2_) 
+	qui tab wghtcategory2, gen(wghtcategory2_) 
 gen 	pkv=. 
 	replace pkv=1 if hlthinsur==2 
 	replace pkv=0 if hlthinsur==1 
@@ -826,6 +826,7 @@ gen 	f2d2smoke	=f2.d2smoke
 gen 	f2d2lncigday=f2.d2lncigday 
 gen 	f2l2smoke	=f2.smoke		-l2.smoke
 gen 	f2l2lncigday=f2.lncigday	-l2.lncigday
+
 
 ***************************************************************************************************
 
