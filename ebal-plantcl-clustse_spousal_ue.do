@@ -27,7 +27,7 @@ foreach yesno in 0 1 {
 	use "$MY_OUT_PATH\analysis_mh2.dta", clear	
 	keep if female==`yesno' 
 	sort random
-	ebalance tu2 $xvars $pvars branch_* welle_* , gen(w_tu2) maxiter(100000) targets(2) /*tolerance(0.005)*/
+	ebalance tu2 $xvars $pvars branch_* welle_* , gen(w_tu2) maxiter(100000) targets(2) 
 	keep persnr welle w_tu2
 	save "$MY_OUT_PATH\match_`yesno'.dta", replace
 }
@@ -46,7 +46,7 @@ merge 1:1 persnr welle using "${MY_OUT_PATH}\matched.dta", keep(master match) no
 * Step 2: Do calculations
 foreach dep_var_2 in smoke lncigday {
 
-* Pooled ------------------------------- (Main specification) -------------------------- 
+* Pooled (Main specification) 
 foreach y in `dep_var_2'  {
 	* Regression with entropy balancing weight for directly affected spouse
 	qui reg $baseline`y' tu2 $xvars $pvars branch_* [weight=w_tu2]
