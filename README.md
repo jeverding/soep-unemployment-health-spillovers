@@ -7,7 +7,9 @@ Replication code for Everding and Marcus (2020, Health Economics).
 
 [`candidatevar_spousal_ue.do`](./candidatevar_spousal_ue.do) constructs and adds leads, lags, transformed variables (polynomials and log. trans.) and imputation flags. 
 
-[`lassodoubleselection_spousal_ue.do`](./lassodoubleselection_spousal_ue.do) fit Lasso regressions (post-double-selection method, see Belloni et al. 2014) on candidate variables 
+[`lassodoubleselection_spousal_ue.do`](./lassodoubleselection_spousal_ue.do) fits Lasso regressions (post-double-selection method, see Belloni et al. 2014) on candidate variables 
+
+[`ebal-plantcl-clustse_spousal_ue.do`](./ebal-plantcl-clustse_spousal_ue.do) runs main analysis, part 1 (without post-double selection) 
 
 
 
