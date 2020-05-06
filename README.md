@@ -5,6 +5,8 @@ Replication code for Everding and Marcus (2020, Health Economics).
 
 [`trans_spousal_ue.do`](./trans_spousal_ue.do) transforms the data and generates the relevant variables. 
 
+[`candidatevar_spousal_ue.do`](./candidatevar_spousal_ue.do) constructs and adds leads, lags, transformed variables (polynomials and log. trans.) and imputation flags. 
+
 
 # Data 
 The main data source is the German Socio-Economic Panel (SOEP, version 33). 
