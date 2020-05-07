@@ -9,6 +9,8 @@ Replication code for Everding and Marcus (2020, Health Economics).
 
 [`pds_spousal_ue.do`](./pds_spousal_ue.do) fits Lasso regressions (post-double-selection method, PDS, see Belloni et al. 2014) on candidate variables 
 
+[`pdsmech_spousal_ue.do`](./pdsmech_spousal_ue.do) fits Lasso regressions and selects controls for analysis of mechanisms (i.e. alternative outcomes) 
+
 [`ebal-plantcl-clustse_spousal_ue.do`](./ebal-plantcl-clustse_spousal_ue.do) runs main analysis, part 1 (without post-double selection) 
 
 
