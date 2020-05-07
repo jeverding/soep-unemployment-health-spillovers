@@ -15,6 +15,8 @@ Replication code for Everding and Marcus (2020, Health Economics).
 
 [`main-analysis2_spousal_ue.do`](./main-analysis2_spousal_ue.do) runs main analysis, part 2 (only post-double selection) 
 
+[`desc-stats1_spousal_ue.do`](./desc-stats1_spousal_ue.do) generates table for descriptive statistics and matching quality, part 1 
+
 
 
 # Data 
