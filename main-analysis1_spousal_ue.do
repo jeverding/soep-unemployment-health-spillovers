@@ -260,6 +260,6 @@ foreach x in 0 1 {
 }
 
 } /* End foreach: Define outcome */
-save "$MY_OUT_PATH\main_plant closure_$imput.dta", replace
+save "$MY_OUT_PATH\main_plant closure_.dta", replace
 
 exit	
