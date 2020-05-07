@@ -22,7 +22,7 @@ sort persnr welle
 keep persnr welle w_match ps
 rename w_match w_ps
 save "$MY_OUT_PATH\matched.dta", replace
-use "$MY_OUT_PATH\main_plant closure_$imput.dta", clear
+use "$MY_OUT_PATH\main_plant closure_.dta", clear
 merge 1:1 persnr welle using "${MY_OUT_PATH}\matched.dta", keep(master match) nogen 
 
 * Code up variable labels (style: LaTeX) 
