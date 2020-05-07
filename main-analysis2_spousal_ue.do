@@ -175,7 +175,7 @@ foreach depvar in smoke lncigd {
 	}
 } /* End foreach: Define outcome */
 
-save "$MY_OUT_PATH\PDS_main_plant closure_$imput.dta", replace
+save "$MY_OUT_PATH\PDS_main_plant closure_.dta", replace
 
 * Make Table 
 cap erase "$MY_FINAL_PATH\main-analysis-tab2_spousal_ue.tex"
