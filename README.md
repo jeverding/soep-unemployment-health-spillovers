@@ -1,6 +1,12 @@
 # soep-unemployment-health-spillovers
 Replication code for Everding and Marcus (2020, Health Economics). 
 
+## Main do-file 
+[`master_spousal_ue.do`](./master_spousal_ue.do) defines all relevant macros, the folder structure, and executes all files sequentially 
+
+## Additional do-files 
+The actual steps of data pre-processing and analyses are divided into several additional do-files ("script" files in Stata), as described in the following: 
+
 [`gen_spousal_ue.do`](./gen_spousal_ue.do) pulls the data 
 
 [`trans_spousal_ue.do`](./trans_spousal_ue.do) transforms the data and generates the relevant variables 
@@ -19,7 +25,13 @@ Replication code for Everding and Marcus (2020, Health Economics).
 
 [`het-analysis1_spousal_ue.do`](./het-analysis1_spousal_ue.do) investigates treatment effect heterogeneity by smoking status at baseline, part 1
 
+[`het-analysis2_spousal_ue.do`](./het-analysis2_spousal_ue.do) investigates treatment effect heterogeneity by smoking status at baseline, part 2
 
+[`mech_spousal_ue.do`](./mech_spousal_ue.do) runs analysis of mechanisms (with PDS), part 1
+
+[`mech2_spousal_ue.do`](./mech2_spousal_ue.do) runs analysis of mechanisms (without PDS), part 2
+
+[`desc-stats2_spousal_ue.do`](./desc-stats2_spousal_ue.do) generates table for descriptive statistics and matching quality, part 2 
 
 # Data 
 The main data source is the German Socio-Economic Panel (SOEP, version 33). 
