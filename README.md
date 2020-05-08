@@ -1,5 +1,5 @@
 # soep-unemployment-health-spillovers
-Replication code for Everding and Marcus (2020, Health Economics), combining **difference-in-differences estimation**, **Lasso regressions**, and matching based on **entropy balancing**. 
+Replication code for Everding and Marcus (2020, Health Economics). 
 
 Specifically, this study examines the causal effect of unemployment on spousal smoking behavior. 
 For this purpose, we focus on involuntary entries into unemployment, combining difference-in-differences (DiD) estimation with a matching strategy based on entropy balancing (EB, Hainmueller 2012). 
