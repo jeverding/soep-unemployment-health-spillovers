@@ -1,5 +1,9 @@
 # soep-unemployment-health-spillovers
-Replication code for Everding and Marcus (2020, Health Economics). 
+Replication code for Everding and Marcus (2020, Health Economics), combining **difference-in-differences estimation**, **Lasso regressions**, and matching based on **entropy balancing**. 
+
+Specifically, this study examines the causal effect of unemployment on spousal smoking behavior. 
+For this purpose, we focus on involuntary entries into unemployment, combining difference-in-differences (DiD) estimation with a matching strategy based on entropy balancing (EB, Hainmueller 2012). 
+For selecting control variables, we complement our econometric approach with two different procedures for control variable selection; a conventional approach based on previous studies and economic intuition as well as a machine learning approach based on Lasso regressions, the post-double-selection method (PDS, Belloni et al. 2014). 
 
 ## Main do-file 
 [`master_spousal_ue.do`](./master_spousal_ue.do) defines all relevant macros, the folder structure, and executes all files sequentially 
@@ -13,11 +17,11 @@ The actual steps of data pre-processing and analyses are divided into several ad
 
 [`candidatevar_spousal_ue.do`](./candidatevar_spousal_ue.do) constructs and adds leads, lags, transformed variables (polynomials and log. trans.) and imputation flags 
 
-[`pds_spousal_ue.do`](./pds_spousal_ue.do) fits Lasso regressions (post-double-selection method, PDS, see Belloni et al. 2014) on candidate variables 
+[`pds_spousal_ue.do`](./pds_spousal_ue.do) fits Lasso regressions (PDS, see Belloni et al. 2014) on candidate variables 
 
 [`pdsmech_spousal_ue.do`](./pdsmech_spousal_ue.do) fits Lasso regressions and selects controls for analysis of mechanisms (i.e. alternative outcomes) 
 
-[`main-analysis1_spousal_ue.do`](./main-analysis1_spousal_ue.do) runs main analysis (with entropy balancing weights, EB, see Hainmueller 2012), part 1 (without post-double selection) 
+[`main-analysis1_spousal_ue.do`](./main-analysis1_spousal_ue.do) runs main analysis (with EB, see Hainmueller 2012), part 1 (without post-double selection) 
 
 [`main-analysis2_spousal_ue.do`](./main-analysis2_spousal_ue.do) runs main analysis (with EB), part 2 (only post-double selection) 
 
